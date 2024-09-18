@@ -1,0 +1,13 @@
+
+prometheusOperator:
+  networkPolicy:
+    enabled: true
+    ## Flavor of the network policy to use.
+    #  Can be:
+    #  * kubernetes for networking.k8s.io/v1/NetworkPolicy
+    #  * cilium     for cilium.io/v2/CiliumNetworkPolicy
+    flavor: kubernetes
+    # matchLabels: {}
+
+
+# helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack --create-namespace -n monitoring -f /home/arnob/yamls/prom-values.yaml

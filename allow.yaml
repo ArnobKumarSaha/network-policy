@@ -1,0 +1,87 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-egress
+  namespace: default
+spec:
+  podSelector: {}
+  egress:
+  - {}
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: operator-egress
+  namespace: kubedb
+spec:
+  podSelector: {}
+  egress:
+  - {}
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: operator-to-db-healthcheck
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: database
+      app.kubernetes.io/instance: mg4
+      app.kubernetes.io/managed-by: kubedb.com
+      app.kubernetes.io/name: mongodbs.kubedb.com
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kubedb
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: kubedb-provisioner
+          app.kubernetes.io/name: kubedb-provisioner
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kubedb
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: kubedb-webhook-server
+          app.kubernetes.io/name: kubedb-webhook-server
+  policyTypes:
+  - Ingress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-to-db
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: database
+      app.kubernetes.io/instance: mg4
+      app.kubernetes.io/managed-by: kubedb.com
+      app.kubernetes.io/name: mongodbs.kubedb.com
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: demo
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: default
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: demo
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+  policyTypes:
+  - Egress
+  - Ingress
