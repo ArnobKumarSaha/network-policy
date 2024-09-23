@@ -1,0 +1,9 @@
+crds:
+  enabled: true
+
+webhook:
+  networkPolicy:
+    enabled: true
+
+# helm install cert-manager jetstack/cert-manager \
+#     --namespace cert-manager  --create-namespace --version v1.15.3 -f cert-values.yaml
