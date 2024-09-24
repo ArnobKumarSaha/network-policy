@@ -1,0 +1,26 @@
+# export LINODE_ACCESS_KEY_ID=34F9JI2JM8DOJC6NUPII
+# export LINODE_SECRET_ACCESS_KEY=<>
+
+# kubectl create secret generic -n demo linode-secret \
+#   --from-literal=AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+#   --from-literal=AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+#   --from-literal=AWS_ENDPOINT=https://us-east-1.linodeobjects.com
+
+apiVersion: storage.kubestash.com/v1alpha1
+kind: BackupStorage
+metadata:
+  name: s3-storage
+  namespace: demo
+spec:
+  storage:
+    provider: s3
+    s3:
+      endpoint: us-east-1.linodeobjects.com
+      bucket: arnob
+      region: us-east-1
+      prefix: kind
+      secretName: linode-secret 
+  usagePolicy:
+    allowedNamespaces:
+      from: All
+  deletionPolicy: WipeOut # One of: WipeOut, Delete

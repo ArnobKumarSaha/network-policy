@@ -1,0 +1,42 @@
+
+I0924 10:39:59.552155       1 database.go:55] Check if DB is pingable...
+I0924 10:40:00.651056       1 database.go:78] Attempting to find primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017
+I0924 10:40:00.651073       1 database.go:89] args = [config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --tls --tlsCAFile /kubestash-tmp/ca.cert --tlsCertificateKeyFile /kubestash-tmp/client.pem -u CN=root,OU=client,O=kubedb --authenticationMechanism MONGODB-X509 --authenticationDatabase $external] 
+I0924 10:40:15.695865       1 database.go:98] output = exiting with code 1
+
+E0924 10:40:15.695926       1 backup.go:103] error while getting primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017. error: no JSON part found in the output from MongoDB
+Error: no JSON part found in the output from MongoDB
+
+
+
+
+I0924 12:04:24.323607       1 database.go:78] Attempting to find primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017
+I0924 12:04:24.323641       1 database.go:89] args = [config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --username=root --password=aexdwkE~A;)4~fsd --authenticationDatabase admin] 
+I0924 12:04:39.395775       1 database.go:98] output = exiting with code 1
+
+E0924 12:04:39.395820       1 backup.go:103] error while getting primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017. error: no JSON part found in the output from MongoDB
+Error: no JSON part found in the output from MongoDB
+Usage:
+
+
+
+
+config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --username=root --password=aexdwkE~A;)4~fsd --authenticationDatabase admin
+config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --tls --tlsCAFile /kubestash-tmp/ca.cert --tlsCertificateKeyFile /kubestash-tmp/client.pem -u CN=root,OU=client,O=kubedb --authenticationMechanism MONGODB-X509 --authenticationDatabase $external 
+
+
+
+app.kubernetes.io/instance=kube-ui-server,app.kubernetes.io/managed-by=Helm,app.kubernetes.io/name=kube-ui-server
+
+
+
+
+
+
+
+
+# arnobkumarsaha/mongodb-restic-plugin:v0.10.0_4.4.26_linux_amd64
+# ghcr.io/kubedb/mongodb-restic-plugin:v0.10.0_${DB_VERSION}
+
+# app.kubernetes.io/component=database,app.kubernetes.io/instance=mg4,app.kubernetes.io/managed-by=kubedb.com,app.kubernetes.io/name=mongodbs.kubedb.com
+# app.kubernetes.io/component=kubestash-backup,app.kubernetes.io/managed-by=kubestash.com,kubestash.com/invoker-namespace=demo

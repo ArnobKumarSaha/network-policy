@@ -1,0 +1,54 @@
+apiVersion: core.kubestash.com/v1alpha1
+kind: BackupConfiguration
+metadata:
+  name: db-backup
+  namespace: demo
+spec:
+  target:
+    apiGroup: kubedb.com
+    kind: MongoDB
+    namespace: demo
+    name: mg4
+  backends:
+  - name: s3-backend
+    storageRef:
+      namespace: demo
+      name: s3-storage
+    retentionPolicy:
+      name: retention-policy
+      namespace: demo
+  sessions:
+  - name: full-db
+    sessionHistoryLimit: 3
+    scheduler:
+      schedule: "*/5 * * * *"
+      successfulJobsHistoryLimit: 2
+      failedJobsHistoryLimit: 2
+      jobTemplate:
+        backoffLimit: 1
+    repositories:
+    - name: full-repo
+      backend: s3-backend
+      directory: /full
+      encryptionSecret:
+        name: encrypt-secret
+        namespace: demo
+    addon:
+      name: mongodb-addon
+      tasks:
+      - name: logical-backup
+      jobTemplate:
+        spec:
+          securityContext:
+            runAsUser: 999
+
+# Labels of backup Pod
+# app.kubernetes.io/component=kubestash-backup
+# app.kubernetes.io/managed-by=kubestash.com
+# kubestash.com/invoker-namespace=demo
+# batch.kubernetes.io/controller-uid=3caaec8b-b1ca-484a-92df-e3d3d54df5f4
+# batch.kubernetes.io/job-name=db-backup-full-db-1727171619
+# controller-uid=3caaec8b-b1ca-484a-92df-e3d3d54df5f4
+# job-name=db-backup-full-db-1727171619
+# kubestash.com/invoker-name=db-backup-full-db-1727171619
+# kubestash.com/session-name=full-db

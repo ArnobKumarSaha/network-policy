@@ -36,13 +36,13 @@ spec:
         labels:
           release: kube-prometheus-stack
         interval: 10s
-  sslMode: requireSSL
-  tls:
-    issuerRef:
-      apiGroup: "cert-manager.io"
-      kind: ClusterIssuer
-      name: cluster-issuer
-  clusterAuthMode: x509
+  # sslMode: requireSSL
+  # tls:
+  #   issuerRef:
+  #     apiGroup: "cert-manager.io"
+  #     kind: ClusterIssuer
+  #     name: cluster-issuer
+  # clusterAuthMode: x509
 
 
 # kubectl create secret tls mongo-ca \

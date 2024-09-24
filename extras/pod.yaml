@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app.kubernetes.io/component: kubestash-backup
+    app.kubernetes.io/managed-by: kubestash.com
+    kubestash.com/invoker-namespace: demo
+  name: test
+  namespace: demo
+spec:
+  containers:
+  - args:
+    - --dbpath=/data/db
+    - --auth
+    - --port=27017
+    - --ipv6
+    - --bind_ip=::,0.0.0.0
+    - --tlsMode=disabled
+    - --clusterAuthMode=keyFile
+        # - --replSet=rs1
+        # - --keyFile=/data/configdb/key.txt
+    command:
+    - mongod
+    image: ghcr.io/appscode-images/mongo:4.4.26@sha256:763add4a8432c2b34e4e26c82040f81e6339722315ae58bfeebec5b9fe762de9
+    imagePullPolicy: IfNotPresent
+    name: logical-backup-0
+    resources: {}
+    volumeMounts:
+    - mountPath: /data/configdb
+      name: config
+    - mountPath: /data/db
+      name: datadir
+  volumes:
+  - emptyDir: {}
+    name: datadir
+  - emptyDir: {}
+    name: config
+
+
