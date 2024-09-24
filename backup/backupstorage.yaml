@@ -24,3 +24,26 @@ spec:
     allowedNamespaces:
       from: All
   deletionPolicy: WipeOut # One of: WipeOut, Delete
+
+
+# kubectl create secret generic -n demo gcs-secret \
+#   --from-literal=RESTIC_PASSWORD=12345 \
+#   --from-literal=GOOGLE_PROJECT_ID=appscode-testing \
+#   --from-file=./GOOGLE_SERVICE_ACCOUNT_JSON_KEY
+---
+apiVersion: storage.kubestash.com/v1alpha1
+kind: BackupStorage
+metadata:
+  name: gcs-storage
+  namespace: demo
+spec:
+  storage:
+    provider: gcs
+    gcs:
+      bucket: kubestash-qa
+      prefix: arnob
+      secretName: gcs-secret 
+  usagePolicy:
+    allowedNamespaces:
+      from: All
+  deletionPolicy: WipeOut

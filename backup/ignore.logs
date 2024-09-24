@@ -40,3 +40,12 @@ app.kubernetes.io/instance=kube-ui-server,app.kubernetes.io/managed-by=Helm,app.
 
 # app.kubernetes.io/component=database,app.kubernetes.io/instance=mg4,app.kubernetes.io/managed-by=kubedb.com,app.kubernetes.io/name=mongodbs.kubedb.com
 # app.kubernetes.io/component=kubestash-backup,app.kubernetes.io/managed-by=kubestash.com,kubestash.com/invoker-namespace=demo
+
+
+# Failed snapshot's status
+dump:
+    driver: Restic
+    error: '{"message_type":"error","error":{"Op":"read","Path":"/dump","Err":{}},"during":"archival","item":"/dump"}
+    Warning: at least one source file could not be read'
+    path: repository/v1/full-db/dump
+    phase: Failed

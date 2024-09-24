@@ -36,4 +36,4 @@ spec:
   - emptyDir: {}
     name: config
 
-
+# mongo config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017
