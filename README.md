@@ -34,3 +34,17 @@ helm install kubestash oci://ghcr.io/appscode-charts/kubestash \
 
 ## DB
 `kubectl apply -f mongo.yaml`
+
+
+
+helm install kubedb oci://ghcr.io/appscode-charts/kubedb \
+  --version v2024.8.21 \
+  --namespace kubedb --create-namespace \
+  --set kubedb-kubestash-catalog.enabled=true \
+  --set-file global.license=/home/arnob/license/kubedb.txt
+  --wait --burst-limit=10000 --debug
+
+
+
+
+  # harbor.appscode.ninja/ghcr/appscode/catalog-manager:v0.0.1

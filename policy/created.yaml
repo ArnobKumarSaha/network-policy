@@ -1,0 +1,146 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-pods-internal
+  namespace: demo
+spec:
+  egress:
+  - to:
+    - namespaceSelector:
+        matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: Exists
+  - to:
+    - ipBlock:
+        cidr: 34.118.224.1/16
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: Exists
+  - from:
+    - ipBlock:
+        cidr: 34.118.224.1/16
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: database
+      app.kubernetes.io/managed-by: kubedb.com
+  policyTypes:
+  - Ingress
+  - Egress
+---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: db-pods-internal
+#   namespace: demo
+# spec:
+#   egress:
+#   - {}
+#   # - to:
+#   #   - namespaceSelector:
+#   #       matchLabels:
+#   #         kubernetes.io/metadata.name: demo
+#   #   - namespaceSelector:
+#   #       matchLabels:
+#   #         kubernetes.io/metadata.name: default
+#   #   - namespaceSelector:
+#   #       matchLabels:
+#   #         kubernetes.io/metadata.name: kube-system
+#   ingress:
+#   - from:
+#     - namespaceSelector:
+#         matchLabels:
+#           kubernetes.io/metadata.name: demo
+#     # - namespaceSelector:
+#     #     matchLabels:
+#     #       kubernetes.io/metadata.name: default
+#     # - namespaceSelector:
+#     #     matchLabels:
+#     #       kubernetes.io/metadata.name: kube-system
+#   podSelector:
+#     matchLabels:
+#       app.kubernetes.io/component: database
+#       app.kubernetes.io/managed-by: kubedb.com
+#   policyTypes:
+#   - Ingress
+#   - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubedb-healthcheck
+  namespace: demo
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kubedb
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: kubedb-provisioner
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: database
+      app.kubernetes.io/managed-by: kubedb.com
+  policyTypes:
+  - Ingress
+---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   annotations:
+#     meta.helm.sh/release-name: kubedb-provisioner
+#     meta.helm.sh/release-namespace: kubedb
+#   labels:
+#     app.kubernetes.io/managed-by: Helm
+#   name: kubedb-provisioner-egress
+#   namespace: kubedb
+# spec:
+#   egress:
+#   - {}
+#   podSelector: {}
+#   policyTypes:
+#   - Egress
+
+
+# clusterprofiles                                             meta.k8s.appscode.com/v1alpha1                 false        ClusterProfile
+# resourceeditors                                             meta.k8s.appscode.com/v1alpha1                 false        ResourceEditor
+# resourcequeries                                             meta.k8s.appscode.com/v1alpha1                 false        ResourceQuery
+
+
+# spec:
+#   egress:
+#   - to:
+#     - namespaceSelector:
+#         matchLabels:
+#           kubernetes.io/metadata.name: demo
+#   - to:
+#     - ipBlock:
+#         cidr: 0.0.0.0/0
+#   ingress:
+#   - from:
+#     - namespaceSelector:
+#         matchLabels:
+#           kubernetes.io/metadata.name: demo
+#   podSelector:
+#     matchLabels:
+#       app.kubernetes.io/component: database
+#       app.kubernetes.io/managed-by: kubedb.com
+#   policyTypes:
+#   - Ingress
+#   - Egress
+
+
+					# //{
+					# //	NamespaceSelector: &metav1.LabelSelector{
+					# //		MatchExpressions: []metav1.LabelSelectorRequirement{
+					# //			{
+					# //				Key:      corev1.LabelMetadataName,
+					# //				Operator: metav1.LabelSelectorOpExists,
+					# //			},
+					# //		},
+					# //	},
+					# //},

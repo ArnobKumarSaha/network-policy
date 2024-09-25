@@ -1,0 +1,21 @@
+apiVersion: core.kubestash.com/v1alpha1
+kind: RestoreSession
+metadata:
+  name: sample
+  namespace: demo
+spec:
+  target:
+    apiGroup: kubedb.com
+    kind: MongoDB
+    namespace: demo
+    name: mg4-res
+  dataSource:
+    snapshot: gcs-repo-db-backup-full-db-1727278801
+    repository: gcs-repo
+    encryptionSecret:
+      name: encrypt-secret # some addon may not support encryption
+      namespace: demo
+  addon:
+    name: mongodb-addon
+    tasks:
+      - name: logical-backup-restore

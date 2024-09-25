@@ -23,11 +23,41 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: kubedb-egress
+  name: kubedb-provisioner-policy
   namespace: kubedb
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: kubedb-provisioner
   egress:
   - {}
   policyTypes:
   - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubedb-webhook-policy
+  namespace: kubedb
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: kubedb-webhook-server
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubeops-webhook-policy
+  namespace: kubeops
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: petset
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
