@@ -1,30 +1,6 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: kubedb-egress
-  namespace: kubedb
-spec:
-  podSelector: {}
-  egress:
-  - {}
-  policyTypes:
-  - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: kubestash-egress
-  namespace: kubestash
-spec:
-  podSelector: {}
-  egress:
-  - {}
-  policyTypes:
-  - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
   name: operator-to-db-healthcheck
   namespace: demo
 spec:
@@ -110,31 +86,3 @@ spec:
 #           kubernetes.io/metadata.name: demo
 #   policyTypes:
 #   - Ingress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: backup-db-egress
-  namespace: demo
-spec:
-  podSelector:
-    matchLabels:
-      # app.kubernetes.io/component: kubestash-backup
-      # app.kubernetes.io/component: kubestash-cleaner
-      app.kubernetes.io/managed-by: kubestash.com
-      kubestash.com/invoker-namespace: demo
-  egress:
-  - {}
-  policyTypes:
-  - Egress
-
-
-# app.kubernetes.io/component=kubestash-cleaner
-# app.kubernetes.io/managed-by=kubestash.com
-# batch.kubernetes.io/controller-uid=27367de1-aa34-45da-8858-e8e45116c837
-# batch.kubernetes.io/job-name=retention-policy-db-backup-full-db-1727183898
-# controller-uid=27367de1-aa34-45da-8858-e8e45116c837
-# job-name=retention-policy-db-backup-full-db-1727183898
-# kubestash.com/invoker-name=db-backup-full-db-1727183898
-# kubestash.com/invoker-namespace=demo
-# kubestash.com/session-name=full-db

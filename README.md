@@ -17,7 +17,7 @@ Prometheus
 
 Cert-manager
 
-`helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace --version v1.15.3 -f cert-values.yaml`
+`helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace --version v1.15.3 -f /home/arnob/network-policy/cert-values.yaml`
 
 KubeStash
 ```

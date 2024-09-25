@@ -1,0 +1,74 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-demo-all
+  namespace: demo
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backup-db-egress
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      # app.kubernetes.io/component: kubestash-backup
+      # app.kubernetes.io/component: kubestash-cleaner
+      app.kubernetes.io/managed-by: kubestash.com
+      kubestash.com/invoker-namespace: demo
+  egress:
+  - {}
+  policyTypes:
+  - Egress
+---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: db-backup-pod-egress
+#   namespace: demo
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app.kubernetes.io/component: database
+#       app.kubernetes.io/instance: mg4
+#       app.kubernetes.io/managed-by: kubedb.com
+#       app.kubernetes.io/name: mongodbs.kubedb.com
+#   egress:
+#   - {}
+#   policyTypes:
+#   - Egress
+
+# mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --archive --username=root --password=H01ujQGXW(o06jZH --authenticationDatabase admin --oplog | restic backup --stdin --quiet --json --stdin-filename dump --host dump --cache-dir /kubestash-tmp/restic-cache --cleanup-cache
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backup-db-egress
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      # app.kubernetes.io/component: kubestash-backup
+      # app.kubernetes.io/component: kubestash-cleaner
+      app.kubernetes.io/managed-by: kubestash.com
+      kubestash.com/invoker-namespace: demo
+  egress:
+  - {}
+  policyTypes:
+  - Egress
+
+
+# app.kubernetes.io/component=kubestash-cleaner
+# app.kubernetes.io/managed-by=kubestash.com
+# batch.kubernetes.io/controller-uid=27367de1-aa34-45da-8858-e8e45116c837
+# batch.kubernetes.io/job-name=retention-policy-db-backup-full-db-1727183898
+# controller-uid=27367de1-aa34-45da-8858-e8e45116c837
+# job-name=retention-policy-db-backup-full-db-1727183898
+# kubestash.com/invoker-name=db-backup-full-db-1727183898
+# kubestash.com/invoker-namespace=demo
+# kubestash.com/session-name=full-db

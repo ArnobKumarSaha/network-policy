@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-kubestash-all
+  namespace: kubestash
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubestash-policy
+  namespace: kubestash
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: kubestash
+      app.kubernetes.io/name: kubestash-operator
+  egress:
+  - {}
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+  - Egress

@@ -1,51 +1,80 @@
+kubectl cp /home/arnob/GOOGLE_SERVICE_ACCOUNT_JSON_KEY db-backup-full-db-1727241952-hrwtt:tmp/GOOGLE_SERVICE_ACCOUNT_JSON_KEY -n demo
 
-I0924 10:39:59.552155       1 database.go:55] Check if DB is pingable...
-I0924 10:40:00.651056       1 database.go:78] Attempting to find primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017
-I0924 10:40:00.651073       1 database.go:89] args = [config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --tls --tlsCAFile /kubestash-tmp/ca.cert --tlsCertificateKeyFile /kubestash-tmp/client.pem -u CN=root,OU=client,O=kubedb --authenticationMechanism MONGODB-X509 --authenticationDatabase $external] 
-I0924 10:40:15.695865       1 database.go:98] output = exiting with code 1
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ ls /tmp
+GOOGLE_SERVICE_ACCOUNT_JSON_KEY
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ export GOOGLE_PROJECT_ID=appscode-testing
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_SERVICE_ACCOUNT_JSON_KEY 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ restic -r gs:kubestash-qa:/xyz init
+enter password for new repository: 
+enter password again: 
+created restic repository d56bd5d039 at gs:kubestash-qa:/xyz
 
-E0924 10:40:15.695926       1 backup.go:103] error while getting primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017. error: no JSON part found in the output from MongoDB
-Error: no JSON part found in the output from MongoDB
-
-
-
-
-I0924 12:04:24.323607       1 database.go:78] Attempting to find primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017
-I0924 12:04:24.323641       1 database.go:89] args = [config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --username=root --password=aexdwkE~A;)4~fsd --authenticationDatabase admin] 
-I0924 12:04:39.395775       1 database.go:98] output = exiting with code 1
-
-E0924 12:04:39.395820       1 backup.go:103] error while getting primary and secondary member of rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017. error: no JSON part found in the output from MongoDB
-Error: no JSON part found in the output from MongoDB
-Usage:
-
-
-
-
-config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --username=root --password=aexdwkE~A;)4~fsd --authenticationDatabase admin
-config --host rs1/mg4-0.mg4-pods.demo.svc:27017,mg4-1.mg4-pods.demo.svc:27017,mg4-2.mg4-pods.demo.svc:27017 --quiet --eval JSON.stringify(rs.isMaster()) --tls --tlsCAFile /kubestash-tmp/ca.cert --tlsCertificateKeyFile /kubestash-tmp/client.pem -u CN=root,OU=client,O=kubedb --authenticationMechanism MONGODB-X509 --authenticationDatabase $external 
-
-
-
-app.kubernetes.io/instance=kube-ui-server,app.kubernetes.io/managed-by=Helm,app.kubernetes.io/name=kube-ui-server
-
-
-
-
-
-
-
-
-# arnobkumarsaha/mongodb-restic-plugin:v0.10.0_4.4.26_linux_amd64
-# ghcr.io/kubedb/mongodb-restic-plugin:v0.10.0_${DB_VERSION}
-
-# app.kubernetes.io/component=database,app.kubernetes.io/instance=mg4,app.kubernetes.io/managed-by=kubedb.com,app.kubernetes.io/name=mongodbs.kubedb.com
-# app.kubernetes.io/component=kubestash-backup,app.kubernetes.io/managed-by=kubestash.com,kubestash.com/invoker-namespace=demo
-
-
-# Failed snapshot's status
-dump:
-    driver: Restic
-    error: '{"message_type":"error","error":{"Op":"read","Path":"/dump","Err":{}},"during":"archival","item":"/dump"}
-    Warning: at least one source file could not be read'
-    path: repository/v1/full-db/dump
-    phase: Failed
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --archive --username=root --password=H01ujQGXW(o06jZH --authenticationDatabase admin --oplog | restic backup --stdin --quiet --json --stdin-filename dump --host dump --cache-dir /kubestash-tmp/restic-cache --cleanup-cache -r gs:kubestash-qa:/xyz
+bash: syntax error near unexpected token `('
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --archive --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog | restic backup --stdin --quiet --json --stdin-filename dump --host dump --cache-dir /kubestash-tmp/restic-cache --cleanup-cache -r gs:kubestash-qa:/xyz
+Fatal: cannot read both password and data from stdin
+2024-09-25T05:33:58.692+0000	Failed: can't create session: could not connect to server: connection() error occured during connection handshake: dial tcp: i/o timeout
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --archive --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog | restic backup --stdin --quiet --json --stdin-filename dump --host dump --cache-dir /kubestash-tmp/restic-cache --cleanup-cache -r gs:kubestash-qa:/xyz ^C
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ export RESTIC_PASSWORD=12345
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --archive --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog | restic backup --stdin --quiet --json --stdin-filename dump --host dump --cache-dir /kubestash-tmp/restic-cache --cleanup-cache -r gs:kubestash-qa:/xyz
+2024-09-25T05:34:28.206+0000	writing admin.system.users to archive on stdout
+2024-09-25T05:34:28.209+0000	done dumping admin.system.users (1 document)
+2024-09-25T05:34:28.209+0000	writing admin.system.version to archive on stdout
+2024-09-25T05:34:28.212+0000	done dumping admin.system.version (2 documents)
+2024-09-25T05:34:28.217+0000	writing kubedb-system.health-check to archive on stdout
+2024-09-25T05:34:28.247+0000	done dumping kubedb-system.health-check (3 documents)
+2024-09-25T05:34:34.292+0000	Failed: connection() error occured during connection handshake: dial tcp: i/o timeout
+{"message_type":"summary","files_new":1,"files_changed":0,"files_unmodified":0,"dirs_new":0,"dirs_changed":0,"dirs_unmodified":0,"data_blobs":1,"tree_blobs":1,"data_added":2908,"total_files_processed":1,"total_bytes_processed":2621,"total_duration":4.738708357,"snapshot_id":"4953fa26c60a40076f31b556029364831cd6b976bff9fa3b36af1d24bd1c0c8b"}
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --archive --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog -o hello
+2024-09-25T05:36:11.113+0000	Failed: bad option: --out not allowed when --archive is specified
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog -o hello
+2024-09-25T05:36:28.092+0000	Failed: can't create session: could not connect to server: connection() error occured during connection handshake: dial tcp: i/o timeout
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog -o hello
+2024-09-25T05:38:50.393+0000	Failed: can't create session: could not connect to server: connection() error occured during connection handshake: dial tcp: i/o timeout
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog -o hello
+2024-09-25T05:40:05.204+0000	Failed: error dumping metadata: error creating directory for metadata file hello/config: mkdir hello: permission denied
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog -o hello
+2024-09-25T05:40:44.560+0000	Failed: error dumping metadata: error creating directory for metadata file hello/config: mkdir hello: permission denied
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog   
+2024-09-25T05:41:03.308+0000	Failed: error dumping metadata: error creating directory for metadata file dump/config: mkdir dump: permission denied
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog --archive
+2024-09-25T05:41:17.093+0000	Failed: can't create session: could not connect to server: connection() error occured during connection handshake: dial tcp: i/o timeout
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ 
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog --archive
+2024-09-25T05:41:47.554+0000	Failed: can't create session: could not connect to server: connection() error occured during connection handshake: dial tcp: i/o timeout
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ mongodump --host mg4-2.mg4-pods.demo.svc.cluster.local:27017 --username=root --password='H01ujQGXW(o06jZH' --authenticationDatabase admin --oplog --archive
+m♁gconcurrent_collectionsversion0.1server_version4.4.26tool_versio100.4.0�dbconfigcollectionimage_collectionmetadata�{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"cc17b337c34242a689560dc0a88d9e28","collectionName":"image_collection","type":"collection"}sizetype
+health-checkmetadata�{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"eeac239c32cb420684b06270608dc4c7","collectionName":"health-check","type":"collection"}sizetype
+system.usersmetadata*{"indexes":[{"v":{"$numberInt":"2"},"unique":true,"key":{"user":{"$numberInt":"1"},"db":{"$numberInt":"1"}},"name":"user_1_db_1"},{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"0e2b2b2a1fd04a4b8508f3e19cc1eb85","collectionName":"system.users","type":"collection"}sizetype
+                                                                                                                                        collectiondbadmincollectionsystem.versionmetadata�{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"081f28cb4ff14fb5ba886cd1aa8d676a","collectionName":"system.version","type":"collection"}sizetype
+                                                                                                                                                                                         collection����2024-09-25T05:42:38.505+0000	writing admin.system.users to archive on stdout
+system.userEOFCRCn
+_id
+   admin.rootuserIdq��mLn�p��\��@userrootdbadmincredentialsySCRAM-SHA-1�iterationCount'salt10Xuo16lEZmqvIiao13UEw==storedKeysu9fr6dsN2IBkL/YrccZywNYBFk=serverKey1VNKrq5fp3O+zMjazvGxQZ4a4SI=SCRAM-SHA-256�iterationCount�:salt)F0MnJbQnm2QrdqrCcbyCwJ8lCMEAfyY796wSBg==storedKey-fXt/tKMqvSVNM/f6AT1AkPAPzZOm3RCACNoZuA8uq9Q=serverKey-rs0BEboKRSiNkj88kbuSsu7sakMhccyZUJjdGZ8c498=roles*0"system.userEOFCRC1Zy ��f����2024-09-25T05:42:38.508+0000	done dumping admin.system.users (1 document)
+2024-09-25T05:42:38.508+0000	writing admin.system.version to archive on stdout
+Edbadmincollectionsystem.versioEOFCRC;_idfeatureCompatibilityVersionversion4.4-_id
+                                                                                  authSchemacurrentVersion����Edbadmincollectionsystem.versioEOFCRCu��j$zױ����2024-09-25T05:42:38.510+0000	done dumping admin.system.version (2 documents)
+2024-09-25T05:42:38.511+0000	writing config.image_collection to archive on stdout
+Hdbconfigcollectionimage_collectioEOFCRC����Hdbconfigcollectionimage_collectioEOFCRC����2024-09-25T05:42:38.533+0000	done dumping config.image_collection (0 documents)
+2024-09-25T05:42:47.594+0000	Failed: connection() error occured during connection handshake: dial tcp: i/o timeout
+mongodb@db-backup-full-db-1727241952-hrwtt:/$ command terminated with exit code 137
