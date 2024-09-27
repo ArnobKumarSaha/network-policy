@@ -1,0 +1,69 @@
+# Source: kubedb/charts/kubedb-webhook-server/templates/network-policy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubedb-kubedb-webhook-server-ingress
+  namespace: kubedb
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: kubedb-webhook-server
+      app.kubernetes.io/instance: kubedb
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+# Source: kubedb/templates/network-policy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubedb-egress
+  namespace: kubedb
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: kubedb
+  egress:
+  # Scenarios considered:
+  # - Communication with apiServer
+  # - DB Health Check
+  # - Pull Image from external sources like docker hub
+  # - Calls of discovery.DiscoveryInterface from cloud providers
+  - {}
+  policyTypes:
+  - Egress
+---
+
+# Source: kubestash/charts/kubestash-operator/templates/operator/network_policy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubestash-kubestash-operator-operator-egress
+  namespace: kubestash
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: kubestash-operator
+      app.kubernetes.io/instance: kubestash
+  egress:
+  - {}
+  policyTypes:
+  - Egress
+---
+# Source: kubestash/charts/kubestash-operator/templates/webhook-server/network-policy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubestash-kubestash-operator-webhook-server-ingress
+  namespace: kubestash
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: kubestash-operator
+      app.kubernetes.io/instance: kubestash
+      component: webhook-server
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress

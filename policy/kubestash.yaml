@@ -12,17 +12,31 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: kubestash-policy
+  name: kubestash-operator-egress
   namespace: kubestash
 spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: kubestash
       app.kubernetes.io/name: kubestash-operator
+      component: operator
   egress:
   - {}
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubestash-webhook-ingress
+  namespace: kubestash
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: kubestash
+      app.kubernetes.io/name: kubestash-operator
+      component: webhook-server
   ingress:
   - {}
   policyTypes:
   - Ingress
-  - Egress
